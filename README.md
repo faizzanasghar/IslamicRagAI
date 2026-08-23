@@ -31,7 +31,7 @@ User Query
                    ▼
 ┌──────────────────────────────────────────────┐
 │  LLM Generation (choose one):                │
-│  • Qwen 2.5 0.5B Instruct (recommended)      │
+│  • Qwen 2.5 (0.5B, 1.5B, 3B, 7B) Instruct    │
 │  • Islamic Fine-Tuned DistilGPT2             │
 │  • Base DistilGPT2                           │
 └──────────────────┬───────────────────────────┘
@@ -47,7 +47,7 @@ User Query
 | 🛡️ **Islamic-Only Guardrail** | Keyword + cosine similarity filter — off-topic queries declined instantly |
 | ⚡ **SSE Token Streaming** | Answers stream live via Server-Sent Events — no waiting on CPU |
 | 🔍 **FAISS Vector Search** | 20,000+ Islamic texts indexed — pre-built cache for instant startup |
-| 🤖 **Multi-Model** | Switch between Qwen 2.5 (0.5B), Islamic DistilGPT2, and base DistilGPT2 |
+| 🤖 **Multi-Model** | Switch between Qwen 2.5 scale (0.5B, 1.5B, 3B, 7B), Islamic DistilGPT2, and base DistilGPT2 |
 | 📱 **Mobile Responsive** | Full mobile UI with collapsible sidebar |
 | 📖 **Markdown Rendering** | Rich text AI answers with bold, lists, and blockquotes |
 | 🌙 **Dark Islamic Design** | Glassmorphism, emerald/teal palette, Arabic typography |
@@ -176,11 +176,16 @@ docker-compose up --build
 
 ## 🤖 Model Comparison & Fine-Tuning
 
-| Model | Size | Speed (CPU) | Quality | Best For |
+This project supports multiple models ranging from ultra-fast baselines to high-quality instruction-tuned models, allowing you to choose the best fit for your hardware capabilities.
+
+| Model | Size | Hardware Reqs (RAM/VRAM) | Quality | Best For |
 |---|---|---|---|---|
-| **Qwen 2.5 0.5B Instruct** | ~1GB | ~8-15s | ⭐⭐⭐⭐⭐ | Production (Recommended) |
-| **Islamic Fine-Tuned DistilGPT2** | ~350MB | ~3-5s | ⭐⭐⭐⭐ | Domain-specific style |
-| **Base DistilGPT2** | ~350MB | ~3-5s | ⭐⭐⭐ | Fast baseline |
+| **Qwen 2.5 7B Instruct** | ~14GB | 16GB+ (GPU recommended) | ⭐⭐⭐⭐⭐ | Production server, highest reasoning quality |
+| **Qwen 2.5 3B Instruct** | ~6GB | 8GB+ (Good CPU/GPU) | ⭐⭐⭐⭐⭐ | Excellent balance of quality and resource usage |
+| **Qwen 2.5 1.5B Instruct**| ~3GB | 4GB+ | ⭐⭐⭐⭐ | Great performance on moderate hardware |
+| **Qwen 2.5 0.5B Instruct**| ~1GB | 2GB+ | ⭐⭐⭐ | Fast baseline instruction-following |
+| **Islamic Fine-Tuned DistilGPT2** | ~350MB | 1GB+ | ⭐⭐⭐⭐ | Domain-specific Islamic style (Very Fast) |
+| **Base DistilGPT2** | ~350MB | 1GB+ | ⭐⭐⭐ | Fallback fast baseline |
 
 ### 🛠️ Custom Fine-Tuning
 The **Islamic Fine-Tuned DistilGPT2** model was trained using the `customllm.ipynb` notebook included in this repository. It utilizes the `final_islamic_dataset.csv` to adapt the base `distilgpt2` model to Islamic terminology and style. The fine-tuned weights are hosted on Hugging Face at `faizzanasghar/islamicgpt`.
@@ -193,7 +198,7 @@ The **Islamic Fine-Tuned DistilGPT2** model was trained using the `customllm.ipy
 ```json
 {
   "query": "What does the Quran say about patience?",
-  "model_key": "qwen",
+  "model_key": "qwen_1.5b",
   "top_k": 3,
   "temperature": 0.7,
   "max_new_tokens": 150
@@ -222,7 +227,7 @@ SSE Event types:
 |---|---|---|
 | `GUARDRAIL_ENABLED` | `true` | Enable Islamic topic filter |
 | `TOPIC_THRESHOLD` | `0.30` | Cosine similarity threshold |
-| `DEFAULT_LLM_KEY` | `qwen` | Default model |
+| `DEFAULT_LLM_KEY` | `qwen` | Default model (can be `qwen`, `qwen_1.5b`, `qwen_3b`, `qwen_7b`, `finetuned`, etc.) |
 | `RATE_LIMIT` | `15` | Requests/minute per IP |
 | `PORT` | `8000` | Backend port |
 | `LOG_LEVEL` | `INFO` | Logging verbosity |
