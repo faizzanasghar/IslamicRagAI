@@ -12,7 +12,7 @@ specialized exclusively for Islamic knowledge — Quran, Hadith, Islamic history
 
 ## 📐 Architecture
 
-```
+```text
 User Query
     │
     ▼
@@ -24,15 +24,15 @@ User Query
                    ▼
 ┌──────────────────────────────────────────────┐
 │  FAISS Vector Search                         │
-│  (SentenceTransformers all-MiniLM-L6-v2)    │
+│  (SentenceTransformers all-MiniLM-L6-v2)     │
 │  → Top-K Islamic passages retrieved          │
 └──────────────────┬───────────────────────────┘
                    │
                    ▼
 ┌──────────────────────────────────────────────┐
 │  LLM Generation (choose one):                │
-│  • Qwen 2.5 0.5B Instruct (recommended)     │
-│  • Islamic Fine-Tuned DistilGPT2            │
+│  • Qwen 2.5 0.5B Instruct (recommended)      │
+│  • Islamic Fine-Tuned DistilGPT2             │
 │  • Base DistilGPT2                           │
 └──────────────────┬───────────────────────────┘
                    │ SSE Streaming
@@ -56,7 +56,7 @@ User Query
 
 ## 📂 Project Structure
 
-```
+```text
 RAG_ChatBot/
 ├── backend/
 │   ├── app/
@@ -67,29 +67,28 @@ RAG_ChatBot/
 │   ├── build_index.py       # One-time FAISS index builder
 │   └── requirements.txt
 ├── frontend/
-│   ├── src/
-│   │   ├── App.jsx          # Root — SSE handler, mobile state
-│   │   ├── components/
-│   │   │   ├── ChatWindow.jsx       # Textarea chat input
-│   │   │   ├── MessageBubble.jsx    # Markdown + streaming bubble
-│   │   │   ├── Sidebar.jsx          # Categorized prompt library
-│   │   │   ├── Header.jsx           # Nav + mobile hamburger
-│   │   │   ├── WelcomeBanner.jsx    # First-visit onboarding modal
-│   │   │   ├── RagInspector.jsx     # FAISS debug view
-│   │   │   ├── DatasetExplorer.jsx  # Dataset browser
-│   │   │   └── SettingsModal.jsx    # Model + param settings
-│   │   └── index.css        # Full design system
-│   └── package.json
-├── final_islamic_dataset.csv # ~26MB Islamic knowledge base
-├── faiss_index.bin           # Pre-built vector index (~32MB)
-├── faiss_metadata.pkl        # Document metadata cache
-├── docker-compose.yml        # Docker deployment
-├── Dockerfile.backend
-├── Dockerfile.frontend
-├── run_backend.bat           # Windows quick-start
-├── run_backend.sh            # Linux/macOS quick-start
-└── .env.example              # Configuration template
+│   ├── src/                 # React UI components (Tailwind CSS)
+│   ├── index.html           # Vite HTML entry point
+│   └── package.json         # Node dependencies
+├── scripts/                 # Debugging and testing scripts
+│   ├── debug_grounding.py
+│   ├── test_grounding_fix.py
+│   └── test_model_size_comparison.py
+├── Quran-Database-main/     # SQLite Quran database (quran.db)
+├── customllm.ipynb          # Jupyter notebook for fine-tuning DistilGPT2
+├── final_islamic_dataset.csv# ~26MB Islamic knowledge base
+├── faiss_index.bin          # Pre-built vector index (~32MB)
+├── faiss_metadata.pkl       # Document metadata cache
+├── docker-compose.yml       # Docker deployment config
+├── Dockerfile.backend       # Backend Dockerfile
+├── Dockerfile.frontend      # Frontend Dockerfile
+├── run_backend.bat          # Windows startup script
+├── run_backend.sh           # Linux/macOS startup script
+├── start.ps1                # PowerShell alternative startup script
+└── .env.example             # Configuration template
 ```
+
+*(Note: The root-level `app.py` is deprecated and no longer used.)*
 
 ---
 
@@ -99,7 +98,7 @@ RAG_ChatBot/
 - Python 3.10+ with `pip`
 - Node.js 18+
 
-### 1. Clone and set up environment
+### 1. Clone and Set Up Environment
 
 ```bash
 # Copy environment config
@@ -119,15 +118,19 @@ pip install -r backend/requirements.txt
 ### 2. Build the FAISS index (if not already built)
 
 ```bash
-# Only needed once; faiss_index.bin already exists in repo
+# Only needed once; faiss_index.bin already exists in the repo
 python backend/build_index.py
 ```
 
-### 3. Start the backend
+### 3. Start the Backend
+
+Use one of the provided startup scripts to automatically detect your environment, install dependencies, and start the server:
 
 **Windows:**
 ```bat
 run_backend.bat
+# OR
+.\start.ps1
 ```
 
 **Linux/macOS:**
@@ -135,7 +138,7 @@ run_backend.bat
 bash run_backend.sh
 ```
 
-Or manually:
+Or run manually:
 ```bash
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --app-dir backend
 ```
@@ -143,7 +146,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --app-dir backend
 Backend available at: **http://localhost:8000**  
 API Docs: **http://localhost:8000/docs**
 
-### 4. Start the frontend
+### 4. Start the Frontend
 
 ```bash
 cd frontend
@@ -151,11 +154,13 @@ npm install
 npm run dev
 ```
 
-Frontend available at: **http://localhost:3000**
+Frontend available at: **http://localhost:3000** (or port specified by Vite)
 
 ---
 
 ## 🐳 Docker Deployment
+
+You can deploy the entire stack using Docker Compose:
 
 ```bash
 # Build and start all services
@@ -165,17 +170,20 @@ docker-compose up --build
 # Backend API: http://localhost:8000
 ```
 
-> **Note:** Large files (`final_islamic_dataset.csv`, `faiss_index.bin`, `faiss_metadata.pkl`) are mounted as volumes — no need to copy them into Docker images.
+> **Note:** Large files (`final_islamic_dataset.csv`, `faiss_index.bin`, `faiss_metadata.pkl`) are mounted as volumes to save space. They do not need to be copied into the Docker images.
 
 ---
 
-## 🤖 Model Comparison
+## 🤖 Model Comparison & Fine-Tuning
 
 | Model | Size | Speed (CPU) | Quality | Best For |
 |---|---|---|---|---|
 | **Qwen 2.5 0.5B Instruct** | ~1GB | ~8-15s | ⭐⭐⭐⭐⭐ | Production (Recommended) |
 | **Islamic Fine-Tuned DistilGPT2** | ~350MB | ~3-5s | ⭐⭐⭐⭐ | Domain-specific style |
 | **Base DistilGPT2** | ~350MB | ~3-5s | ⭐⭐⭐ | Fast baseline |
+
+### 🛠️ Custom Fine-Tuning
+The **Islamic Fine-Tuned DistilGPT2** model was trained using the `customllm.ipynb` notebook included in this repository. It utilizes the `final_islamic_dataset.csv` to adapt the base `distilgpt2` model to Islamic terminology and style. The fine-tuned weights are hosted on Hugging Face at `faizzanasghar/islamicgpt`.
 
 ---
 
@@ -199,11 +207,12 @@ SSE Event types:
 - `model_loading` — LLM still loading; returns vector results
 - `error` — generation error
 
-### `POST /api/chat` — Non-Streaming *(Fallback)*
-### `POST /api/retrieve` — Raw FAISS vector search
-### `GET /api/health` — Backend status
-### `GET /api/stats` — Index statistics
-### `GET /api/dataset/sample` — Random dataset samples
+### Additional Endpoints
+- `POST /api/chat` — Non-Streaming *(Fallback)*
+- `POST /api/retrieve` — Raw FAISS vector search
+- `GET /api/health` — Backend status
+- `GET /api/stats` — Index statistics
+- `GET /api/dataset/sample` — Random dataset samples
 
 ---
 
@@ -226,17 +235,18 @@ SSE Event types:
 |---|---|
 | `final_islamic_dataset.csv` | 20,000+ Quranic verses & Hadiths (English, Arabic) |
 | `Quran-Database-main/quran.db` | Full Quran SQLite database |
-| `multilingual_dataset/` | Quran in 22 languages (English, Urdu, Arabic, etc.) |
+
+*(The `multilingual_dataset/` was removed from the active project as it is unused).*
 
 ---
 
 ## 🛡️ Islamic Guardrail Details
 
-The guardrail uses a two-stage approach — no extra model or RAM required:
+The guardrail uses a two-stage approach requiring no extra heavy models or RAM:
 
-1. **Keyword Fast-Reject** (O(1)): Instantly rejects obvious non-Islamic terms like "python", "weather", "bitcoin"
-2. **Islamic Override** (O(1)): Instantly accepts explicit Islamic terms like "Allah", "Quran", "Hadith", "salah"
-3. **Semantic Similarity** (~2ms): Encodes query with the already-loaded SentenceTransformer and computes cosine similarity against 50+ pre-computed Islamic anchor phrase embeddings
+1. **Keyword Fast-Reject** (O(1)): Instantly rejects obvious non-Islamic terms like "python", "weather", "bitcoin".
+2. **Islamic Override** (O(1)): Instantly accepts explicit Islamic terms like "Allah", "Quran", "Hadith", "salah".
+3. **Semantic Similarity** (~2ms): Encodes query with the already-loaded SentenceTransformer and computes cosine similarity against 50+ pre-computed Islamic anchor phrase embeddings.
 
 ---
 
