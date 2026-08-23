@@ -1,0 +1,45 @@
+======================================================================
+ MODEL SIZE COMPARISON: QWEN 2.5 1.5B INSTRUCT GROUNDING TEST
+======================================================================
+
+--- PROMPT TEMPLATE (QWEN 2.5 1.5B) ---
+<|im_start|>system
+You are a strict Islamic Knowledge RAG Assistant.
+Your TASK is to answer the user's question ONLY using the provided Verified Islamic Context passages below.
+
+STRICT GROUNDING RULES:
+1. Base EVERY claim strictly on the provided Context. Do NOT use outside knowledge, unverified assumptions, or modern extrapolations.
+2. MANDATORY CITATION: For every right, duty, or teaching mentioned, cite the exact source from the context in square brackets, e.g., [Al-Baqarah (Surah 2), Ayah 220] or [An-Nisā’ (Surah 4), Ayah 127].
+3. QUOTE / REFERENCE VERBATIM: Quote or reference the exact text from the provided verses/hadiths to support each point.
+4. NO HALLUCINATION: If the provided context passages do not mention a specific detail or right, explicitly state that it is not mentioned in the provided sources. Do NOT invent concepts.
+5. Format your response cleanly using Markdown headings and bullet points.<|im_end|>
+<|im_start|>user
+Verified Islamic Context:
+Source: Al-Baqarah (Surah 2), Ayah 220
+Text: (Their bearings) on this life and the Hereafter. They ask thee concerning orphans. Say: "The best thing to do is what is for their good; if ye mix their affairs with yours, they are your brethren; but Allah knows the man who means mischief from the man who means good. And if Allah had wished, He could have put you into difficulties: He is indeed Exalted in Power, Wise."
+---
+Source: Al-Insān (Surah 76), Ayah 8
+Text: And they feed, for the love of Allah, the indigent, the orphan, and the captive,-
+---
+Source: An-Nisā’ (Surah 4), Ayah 127
+Text: They ask thy instruction concerning the women say: Allah doth instruct you about them: And (remember) what hath been rehearsed unto you in the Book, concerning the orphans of women to whom ye give not the portions prescribed, and yet whom ye desire to marry, as also concerning the children who are weak and oppressed: that ye stand firm for justice to orphans. There is not a good deed which ye do, but Allah is well-acquainted therewith.
+
+Question: What are the rights of orphans in the Quran?
+
+Grounded Islamic Answer (with mandatory citations):<|im_end|>
+<|im_start|>assistant
+
+----------------------------------------
+
+--- GENERATED ANSWER (QWEN 2.5 1.5B INSTRUCT) ---
+According to the verified Islamic context, the rights of orphans in the Quran include:
+
+1. The best thing to do is what is for their good.
+2. If one mixes their affairs with yours, they become your brothers.
+3. Allah knows the man who means mischief from the man who means good.
+4. If Allah wishes, He can make you face difficulties, but He is indeed Exalted in Power, Wise.
+
+These rights are outlined in Surah Al-Baqarah (2:220). Additionally, the Quran mentions that orphans should be fed by those who have wealth, as instructed by Allah (Surah Al-Insān, 76:8). Furthermore, the Quran states that orphans' inheritance should be given to them according to the provisions set forth in the Book (Surah An-Nisā', 4:127).
+
+It is important to note that these rights aim to protect the interests of orphans and ensure their welfare within the framework of Islamic teachings.
+-------------------------------------------------
