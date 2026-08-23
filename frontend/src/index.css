@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----------------------------------------------------------------
+   CSS Custom Properties
+   ---------------------------------------------------------------- */
+:root {
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --font-arabic: 'Amiri', serif;
+  --emerald-glow: rgba(16, 185, 129, 0.18);
+  --teal-glow: rgba(20, 184, 166, 0.14);
+  --gold-glow: rgba(245, 158, 11, 0.08);
+}
+
+/* ----------------------------------------------------------------
+   Base Reset & Body
+   ---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #090d16;
+  color: #f1f5f9;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(at 0% 0%, var(--emerald-glow) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, var(--teal-glow) 0px, transparent 50%),
+    radial-gradient(at 50% 30%, var(--gold-glow) 0px, transparent 60%);
+  background-attachment: fixed;
+}
+
+/* ----------------------------------------------------------------
+   Glassmorphism Design System
+   ---------------------------------------------------------------- */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.82) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.52) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.glass-card:hover {
+  border-color: rgba(16, 185, 129, 0.38) !important;
+  box-shadow: 0 8px 32px -8px rgba(16, 185, 129, 0.18) !important;
+  transform: translateY(-1px);
+}
+
+.glass-input {
+  background: rgba(15, 23, 42, 0.75) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.10) !important;
+  color: #ffffff !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.glass-input:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.20) !important;
+}
+
+/* ----------------------------------------------------------------
+   Gradient Text Utilities
+   ---------------------------------------------------------------- */
+.gradient-text-emerald {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ----------------------------------------------------------------
+   Markdown Content Rendering (inside AI chat bubbles)
+   ---------------------------------------------------------------- */
+.markdown-content {
+  line-height: 1.75;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+}
+
+.markdown-content p {
+  margin: 0.6em 0;
+}
+
+.markdown-content p:first-child {
+  margin-top: 0;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0.9em 0 0.4em;
+}
+
+.markdown-content h1 { font-size: 1.2rem; }
+.markdown-content h2 { font-size: 1.05rem; }
+.markdown-content h3 { font-size: 0.95rem; }
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.4em;
+  margin: 0.5em 0;
+}
+
+.markdown-content li {
+  margin: 0.3em 0;
+}
+
+.markdown-content strong {
+  color: #a7f3d0;
+  font-weight: 700;
+}
+
+.markdown-content em {
+  color: #fcd34d;
+  font-style: italic;
+}
+
+.markdown-content code {
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 4px;
+  padding: 0.1em 0.45em;
+  font-size: 0.82em;
+  color: #6ee7b7;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #10b981;
+  margin: 0.8em 0;
+  padding: 0.4em 0 0.4em 1em;
+  background: rgba(16, 185, 129, 0.06);
+  border-radius: 0 6px 6px 0;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.markdown-content a {
+  color: #34d399;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  margin: 0.8em 0;
+}
+
+/* ----------------------------------------------------------------
+   Arabic Text
+   ---------------------------------------------------------------- */
+.font-arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.1em;
+  line-height: 2;
+  direction: rtl;
+  text-align: right;
+  color: #fcd34d;
+}
+
+/* ----------------------------------------------------------------
+   Streaming Typing Cursor
+   ---------------------------------------------------------------- */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: '▍';
+  display: inline-block;
+  margin-left: 2px;
+  color: #10b981;
+  animation: blink 0.9s step-end infinite;
+  font-size: 0.85em;
+}
+
+/* ----------------------------------------------------------------
+   Animations
+   ---------------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
+.animate-float {
+  animation: floatSlow 4.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0) 0%,
+    rgba(16, 185, 129, 0.12) 50%,
+    rgba(15, 23, 42, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.3s ease-out forwards;
+}
+
+/* ----------------------------------------------------------------
+   Off-topic / Rejected Message Card
+   ---------------------------------------------------------------- */
+.off-topic-card {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.05));
+  border: 1px solid rgba(251, 191, 36, 0.30);
+  border-radius: 16px;
+}
+
+/* ----------------------------------------------------------------
+   Loading Progress Bar
+   ---------------------------------------------------------------- */
+@keyframes progressSlide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+.progress-bar-animated::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: progressSlide 1.5s ease infinite;
+}
+
+/* ----------------------------------------------------------------
+   Custom Scrollbar
+   ---------------------------------------------------------------- */
+::-webkit-scrollbar          { width: 5px; height: 5px; }
+::-webkit-scrollbar-track    { background: rgba(15, 23, 42, 0.6); }
+::-webkit-scrollbar-thumb    { background: rgba(255,255,255,0.13); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.5); }
+
+/* ----------------------------------------------------------------
+   Mobile Sidebar Overlay
+   ---------------------------------------------------------------- */
+.sidebar-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 30;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.sidebar-mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 300px;
+  z-index: 40;
+  animation: slideInLeft 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
