@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  # ----------------------------------------------------------------
+  # FastAPI Backend
+  # ----------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: islamic_rag_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount large data files from host — avoids copying into image
+      - ./final_islamic_dataset.csv:/app/final_islamic_dataset.csv:ro
+      - ./faiss_index.bin:/app/faiss_index.bin:ro
+      - ./faiss_metadata.pkl:/app/faiss_metadata.pkl:ro
+      # Persist downloaded HuggingFace model weights across restarts
+      - hf_cache:/root/.cache/huggingface
+    environment:
+      - GUARDRAIL_ENABLED=true
+      - TOPIC_THRESHOLD=0.30
+      - DEFAULT_LLM_KEY=qwen
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ----------------------------------------------------------------
+  # Nginx Frontend
+  # ----------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
+    container_name: islamic_rag_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  hf_cache:
